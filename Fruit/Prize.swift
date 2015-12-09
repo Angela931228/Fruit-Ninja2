@@ -13,7 +13,7 @@ import UIKit
 
 class Prize :Enemy
 {
-    
+    var ropeArr = [Rope]()
     init(pos:CGPoint) {
         super.init(enemyImageStr: image_prize)
         position = pos
@@ -36,6 +36,19 @@ class Prize :Enemy
         physicsBody?.mass = 0.7
     }
     
+    override func removeCutedNode() {
+        var ropeCutCount = 0
+        for i in 0..<ropeArr.count{
+            if(ropeArr[i].isCut){
+                ropeCutCount++
+            }
+        }
+        
+        if(ropeCutCount == ropeArr.count){
+            super.removeCutedNode()
+        }
+    }
+    
     func setupRopeSegments(scene:SKScene,index:Int,width:CGFloat,height:CGFloat)
     {
         let file = ropeDataFile + String(index+1) + ".plist"
@@ -50,6 +63,7 @@ class Prize :Enemy
             let anchorPoint = CGPoint(x: relAnchorPoint.x * width,y:relAnchorPoint.y * height)
             let idx = index*2 + i
             let rope = Rope(lengh: length, anchorpoint: anchorPoint,name: String(idx))
+            ropeArr.append(rope)
             rope.addToScene(scene)
             rope.attachToPrize(self)
         }

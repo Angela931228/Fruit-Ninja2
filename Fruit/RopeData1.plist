@@ -8,7 +8,7 @@
 		<key>anchorPoint</key>
 		<string>{38,533}</string>
 		<key>length</key>
-		<integer>3</integer>
+		<integer>6</integer>
 	</dict>
 	<dict>
 		<key>relAnchorPoint</key>
@@ -16,7 +16,7 @@
 		<key>anchorPoint</key>
 		<string>{272,511}</string>
 		<key>length</key>
-		<integer>3</integer>
+		<integer>6</integer>
 	</dict>
 </array>
 </plist>

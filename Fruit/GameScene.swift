@@ -46,18 +46,24 @@ class GameScene: SKScene {
 
     var isGameEnd:Bool = false
     
-    override func didMoveToView(view: SKView) {
-        
-        print(self.view?.frame.size.width)
-        print(self.view?.frame.size.height)
 
-        self.width = (self.view?.frame.size.width)!
-        self.height = (self.view?.frame.size.height)!
+//    override init(size: CGSize) {
+//        super.init(size: size)
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    
+    override func didMoveToView(view: SKView) {
+        width = (self.view?.frame.size.width)!
+        height = (self.view?.frame.size.height)!
 
         setupPhysics()
         setupUI()
 
         createSlices()
+        
         
     }
     
@@ -118,6 +124,7 @@ class GameScene: SKScene {
         earth = SKSpriteNode(imageNamed: image_earth)
         earth.position = CGPoint(x: width/2, y: 0)
         earth.zPosition = Zposition.background
+        earth.name = name_earth
         addChild(earth)
         
         let rotate = SKAction.rotateByAngle(2, duration: 5)
@@ -129,7 +136,6 @@ class GameScene: SKScene {
         earth.physicsBody?.collisionBitMask = Category.enemy
         earth.physicsBody?.dynamic = false
         
-        //setupPrizes()
 
     }
 
@@ -147,10 +153,10 @@ class GameScene: SKScene {
     }
     
     func createReStar(){
-        restart = creatSkLabelNode("Restart", size: 50, position: CGPoint(x: width*0.8, y: height*0.8))
-        restart.name = "Restart"
+        restart = creatSkLabelNode("Restart", size: 50, position: CGPoint(x: width*0.15, y: height*0.8))
+        restart.name = name_btn_restart
         addChild(restart)
-        restart.setScale(1.7)
+        runScaleAction(restart)
     }
     
     func runScaleAction(node:SKNode){
@@ -159,7 +165,7 @@ class GameScene: SKScene {
     }
     
     func creatSkLabelNode(text:String,size:CGFloat = 100,position:CGPoint) -> SKLabelNode {
-        let label = SKLabelNode(fontNamed: "Chalkduster")
+        let label = SKLabelNode(fontNamed: "Impact")
         label.text = text
         label.fontSize = size
         label.position = position
@@ -183,24 +189,6 @@ class GameScene: SKScene {
     
     /*---------game logic ---------*/
     
-    
-    func startGame(){
-        
-        waveArr = [.OneNoBomb, .OneNoBomb, .TwoWithOneBomb, .TwoWithOneBomb, .Three, .One, .Chain]
-
-        let spawnRandomAsteroid = SKAction.runBlock({self.creatPlanets()})
-        let waitTime = SKAction.waitForDuration(5.0)
-        let timesequence = SKAction.sequence([spawnRandomAsteroid,waitTime])
-        runAction(SKAction.repeatActionForever(timesequence), withKey: key_creat_planet)
-        
-    }
-
-    
-    func pass(){
-        isGameEnd = true
-        waveArr = []
-        createTips("Pass!")
-    }
     
     func addScore(num:Int){
         score+=num
@@ -231,7 +219,7 @@ class GameScene: SKScene {
                 setupPrizes()
                 alwaysBomb()
             }else if curLife == 0 {
-                endGame()
+                dead()
             }
         }
     }
@@ -258,21 +246,58 @@ class GameScene: SKScene {
         node.colorBlendFactor = 1
     }
     
+    func startGame(){
+        
+        waveArr = [.OneNoBomb, .OneNoBomb, .TwoWithOneBomb, .TwoWithOneBomb, .Three, .One, .Chain]
+        
+        let spawnRandomAsteroid = SKAction.runBlock({self.creatPlanets()})
+        let waitTime = SKAction.waitForDuration(2.0)
+        let timesequence = SKAction.sequence([spawnRandomAsteroid,waitTime])
+        runAction(SKAction.repeatActionForever(timesequence), withKey: key_creat_planet)
+    }
+    
     func endGame(){
         isGameEnd = true
-        setGrayColor(earth)
-        earth.removeActionForKey(key_rotate_earth)
         removeActionForKey(key_creat_planet)
+        clearEnemy()
         clearSlice()
         waveArr = []
+    }
+    
+    func dead(){
+        endGame()
+        setGrayColor(earth)
+        earth.removeActionForKey(key_rotate_earth)
         createTips("Game Over!")
         createReStar()
+    }
+    
+    func pass(){
+        endGame()
+        createTips("Pass!")
+        runAction(SKAction.waitForDuration(2))
+        switchToNewGameWithTransition()
+    }
+    
+    
+    func switchToNewGameWithTransition(){
+        let index = RandomInt(min: 0, max: 11)
+        let delay = SKAction.waitForDuration(0.2)
+        let transition = SKAction.runBlock({
+            let scene = GameScene(size: self.size)
+            self.view?.presentScene(scene, transition: transitions[index])
+        })
+        
+        runAction(SKAction.sequence([delay,transition]), withKey: "transition")
         
     }
     
-    func restarted(){
-        
+    func clearEnemy(){
+        for i in 0..<activeEnemies.count{
+            activeEnemies[i].removeFromParent()
+        }
     }
+  
     
 
     /*---------game logic end---------*/
@@ -282,7 +307,7 @@ class GameScene: SKScene {
     
     
     
-    func creatNextWave() -> SequenceType{print(SequenceType.OneNoBomb)
+    func creatNextWave() -> SequenceType{
         let nextWave = SequenceType(rawValue: RandomInt(min: 0, max: 7))!
         //print(nextWave)
         return nextWave
@@ -497,9 +522,12 @@ class GameScene: SKScene {
     func clickButton(node:SKNode){
         
         if(node is SKLabelNode){
-            if node.name == "Restart"{
-                restarted()
+            if node.name == name_btn_restart{
+                switchToNewGameWithTransition()
             }
+//            if node.name == name_btn_back{
+//                switchToNewGameWithTransition()
+//            }
         }
     }
     
@@ -581,46 +609,51 @@ class GameScene: SKScene {
     
     
     func checkCut(body:SKPhysicsBody){
-        let node = body.node
-        let name:String = (node?.name)!
-        print(name)
-        if(name.characters.count>4){
-            let index = name.startIndex.advancedBy(4)
-            let subStr = name.substringToIndex(index)
-            if(subStr == name_rope){
-                node!.removeFromParent()
+        if(!isGameEnd){
+            let node = body.node
+            if((node) != nil){
+                let name:String = (node?.name)!
+                print(name)
+                if(name.characters.count>4){
+                    let index = name.startIndex.advancedBy(4)
+                    let subStr = name.substringToIndex(index)
+                    if(subStr == name_rope){
+                        node!.removeFromParent()
+                        
+                        self.enumerateChildNodesWithName(name, usingBlock: {
+                            (node,stop) in
+                            let rope = node as! Rope
+                            rope.cut()
+                        })
+                    }
+                }
                 
-                self.enumerateChildNodesWithName(name, usingBlock: {
-                    (node,stop) in
-                    let rope = node as! Rope
-                    rope.cut()
-                })
+                if(node is Enemy || node is Prize){
+                    
+                    let enemy = node as! Enemy
+                    if(!enemy.isCut){
+                        enemy.cut()
+                        if enemy.name == name_enemy{
+                            addScore(5)
+                        }
+                        
+                        if enemy.name == name_bomb{
+                            lostLife()
+                        }
+                        
+                        if enemy.name == name_add_life{
+                            addLife()
+                        }
+                        
+                        let index = activeEnemies.indexOf(enemy)
+                        if(index>0){
+                            activeEnemies.removeAtIndex(index!)
+                        }
+                    }
+                }
             }
         }
 
-        if(node is Enemy || node is Prize){
-            
-            let enemy = node as! Enemy
-            if(!enemy.isCut){
-                if enemy.name == name_enemy{
-                    addScore(5)
-                }
-                
-                if enemy.name == name_bomb{
-                    lostLife()
-                }
-                
-                if enemy.name == name_add_life{
-                    addLife()
-                }
-                enemy.cut()
-                
-                let index = activeEnemies.indexOf(enemy)
-                if(index>0){
-                    activeEnemies.removeAtIndex(index!)
-                }
-            }
-        }
     }
     
     /*---------slice end---------*/

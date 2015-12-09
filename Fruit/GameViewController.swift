@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let scene = GameScene(fileNamed:"GameScene") {
+        if let scene = DirectorScene(fileNamed:"DirectorScene") {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
@@ -30,6 +30,18 @@ class GameViewController: UIViewController {
             
             skView.presentScene(scene)
         }
+    }
+    
+    func switchToNewGameWithTransition(){
+//        let index = RandomInt(min: 0, max: 11)
+//        let delay = SKAction.waitForDuration(0.2)
+//        let transition = SKAction.runBlock({
+//            //let scene = GameScene(size: self.size)
+//            self.view?.presentScene(scene, transition: self.transitions[index])
+//        })
+        
+        //runAction(SKAction.sequence([delay,transition]), withKey: "transition")
+        
     }
 
     override func shouldAutorotate() -> Bool {

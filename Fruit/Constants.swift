@@ -8,11 +8,20 @@
 
 import Foundation
 import UIKit
+import SpriteKit
 
 
 let ropeDataFile = "RopeData"
 let ropeTextureImage = "ropeTexture"
 let ropeHolderImage = "ropeHolder"
+
+let image_pig_1 = "pig_1"
+let image_pig_2 = "pig_2"
+let image_pig_3 = "pig_3"
+let image_title = "title"
+let image_chatbox = "chatbox"
+let image_btn_blue_up = "btn_blue_up"
+let image_btn_blue_down = "btn_blue_down"
 
 let image_life = "spaceship"
 let image_prize = "spaceship"
@@ -23,10 +32,16 @@ let image_varnus = "varnus"
 let image_saturn = "saturn"
 
 let name_prize = "prize"
+let name_earth = "earth"
 let name_rope = "rope"
 let name_enemy = "enemy"
 let name_bomb = "bomb"
 let name_add_life = "add_life"
+let name_btn_restart = "restart"
+let name_btn_back = "back"
+let name_btn_normalGame = "btn_game_0"
+let name_btn_timeGame = "btn_game_1"
+let name_btn_diyGame = "btn_game_2"
 
 let enemyCutEffect = "sliceHitEnemy.sks"
 let bombCutEffect = "sliceHitBomb.sks"
@@ -39,6 +54,21 @@ let maxLife = 3
 let key_creat_planet = "creat_planet"
 let key_rotate_earth = "rotate_earth"
 
+
+let transitions = [
+    SKTransition.doorsOpenHorizontalWithDuration(1.0),
+    SKTransition.doorsOpenVerticalWithDuration(1.0),
+    SKTransition.doorsCloseHorizontalWithDuration(1.0),
+    SKTransition.doorsCloseVerticalWithDuration(1.0),
+    SKTransition.flipHorizontalWithDuration(1.0),
+    SKTransition.flipVerticalWithDuration(1.0),
+    SKTransition.moveInWithDirection(.Left, duration:1.0),
+    SKTransition.pushWithDirection(.Right, duration:1.0),
+    SKTransition.revealWithDirection(.Down, duration:1.0),
+    SKTransition.crossFadeWithDuration(1.0),
+    SKTransition.fadeWithColor(UIColor.darkGrayColor(), duration:1.0),
+    SKTransition.fadeWithDuration(1.0)
+]
 
 
 let CanCutMultipleRopeAtOnce  = false
@@ -71,3 +101,5 @@ struct Zposition {
     static let slice:CGFloat = 5
     static let labeltop:CGFloat = 6
 }
+
+

@@ -7,3 +7,25 @@
 //
 
 import Foundation
+import AVFoundation
+import UIKit
+import SpriteKit
+
+
+class DirectorScene: SKScene {
+    
+    var width:CGFloat = 0.0
+    var height:CGFloat = 0.0
+    
+
+    override func didMoveToView(view: SKView) {
+        width = (self.view?.frame.size.width)!
+        height = (self.view?.frame.size.height)!
+        
+        let scene = MenuScene(size: self.size)
+        self.view?.presentScene(scene, transition: transitions[0])
+    }
+    
+
+}
+

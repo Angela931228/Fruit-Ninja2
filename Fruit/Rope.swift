@@ -11,9 +11,10 @@ import UIKit
 
 class Rope :SKNode
 {
-    private var length:Int = 0
-    private var anchorPoint: CGPoint
-    private var ropeSegments: [SKNode] = []
+    var length:Int = 0
+    var anchorPoint: CGPoint
+    var ropeSegments: [SKNode] = []
+    var isCut:Bool = false
     
     init(lengh:Int,anchorpoint:CGPoint,name:String)
     {
@@ -22,6 +23,7 @@ class Rope :SKNode
         
         super.init()
         self.name = name_rope + name
+        isCut = false
         zPosition = Zposition.rope
     }
 
@@ -105,6 +107,7 @@ class Rope :SKNode
 
     func cut(){
         //node.removeFromParent()
+        isCut = true
         let fadeAway = SKAction.fadeOutWithDuration(0.25)
         let removeNode = SKAction.removeFromParent()
         let sequence = SKAction.sequence([fadeAway,removeNode])
