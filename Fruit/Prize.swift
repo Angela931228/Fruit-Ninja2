@@ -51,7 +51,7 @@ class Prize :Enemy
     
     func setupRopeSegments(scene:SKScene,index:Int,width:CGFloat,height:CGFloat)
     {
-        let file = ropeDataFile + String(index+1) + ".plist"
+        let file = file_ropeData + String(index+1) + ".plist"
         let dataFile = NSBundle.mainBundle().pathForResource(file, ofType: nil)
         let ropes = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
         

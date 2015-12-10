@@ -10,14 +10,41 @@ import Foundation
 import SpriteKit
 import UIKit
 
-class ButtonNode: SKSpriteNode
+class ButtonNode: SKNode
 {
     var textureArr:[SKTexture] = [SKTexture]()
+    var textForBtn:String = ""
     
-    init(arr:[SKTexture]){
+    var image:SKSpriteNode = SKSpriteNode()
+    var label:SKLabelNode = SKLabelNode()
+    
+    init(arr:[SKTexture],btnName:String,text:String="test"){
         textureArr = arr
-        let texture:SKTexture = arr[0]
-        super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
+        textForBtn = text
+        super.init()
+        self.name = btnName
+        setupImage()
+        setupLabel(textForBtn)
+
+    }
+    
+    func setupImage(){
+        image = SKSpriteNode(texture: textureArr[0])
+        label.zPosition = 0.0
+        addChild(image)
+    }
+    
+    func setupLabel(text:String){
+        label = SKLabelNode(text: text)
+        label.fontName = "Impact"
+        label.fontSize = 50
+        label.position = CGPoint(x: 0, y: -5)
+        label.zPosition = 1.0
+        addChild(label)
+    }
+    
+    func setImageSize(scale:CGFloat){
+        image.size = CGSize(width: image.size.width * scale, height: image.size.height * scale)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,7 +57,7 @@ class ButtonNode: SKSpriteNode
         let wait = SKAction.waitForDuration(2)
         let up = SKAction.setTexture(textureArr[0])
         //runAction(SKAction.sequence([down,wait,up]))
-        runAction(down)
+        image.runAction(down)
     }
     
     func btnUp(){
@@ -38,7 +65,7 @@ class ButtonNode: SKSpriteNode
         let wait = SKAction.waitForDuration(2)
         let up = SKAction.setTexture(textureArr[0])
         //runAction(SKAction.sequence([down,wait,up]))
-        runAction(up)
+        image.runAction(up)
     }
     
 }

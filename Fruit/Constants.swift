@@ -11,7 +11,9 @@ import UIKit
 import SpriteKit
 
 
-let ropeDataFile = "RopeData"
+let file_ropeData = "RopeData"
+let file_gameData = "GameData"
+
 let ropeTextureImage = "ropeTexture"
 let ropeHolderImage = "ropeHolder"
 
@@ -25,7 +27,7 @@ let image_btn_blue_down = "btn_blue_down"
 
 let image_life = "spaceship"
 let image_prize = "spaceship"
-let image_bomb = "sun"
+let image_bomb = "meteor"
 let image_earth = "earth"
 let image_murcury = "murcury"
 let image_varnus = "varnus"

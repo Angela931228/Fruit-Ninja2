@@ -26,28 +26,8 @@ class Enemy :SKSpriteNode
         type = enemyImageStr
         let texture = SKTexture(imageNamed: enemyImageStr)
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
-        
-        setupType()
     }
-    
-    func setupType(){
-        switch type {
-        case image_bomb:
-            name = name_bomb
-            
-//            emitter = SKEmitterNode(fileNamed: "sliceFuse.sks")!
-//            emitter!.position = CGPoint(x: 76, y: 64)
-//            addChild(emitter!)
-            break
-        case image_life:
-            name = name_add_life
-            break
-        default:
-            name = name_enemy
-            break
-        }
 
-    }
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,6 +38,7 @@ class Enemy :SKSpriteNode
         setupRandomPosition(min,max: max)
         setupPhysics()
         playStartSoundEffect()
+        setupType()
     }
     
     func checkSelf(){
@@ -95,11 +76,32 @@ class Enemy :SKSpriteNode
     func setupPhysics(){
         physicsBody = SKPhysicsBody(texture: texture!, size: size)
         physicsBody!.velocity = CGVector(dx: randomXVelocity * 40, dy: randomYVelocity * 40)
+        physicsBody?.restitution = 1.0
         physicsBody!.angularVelocity = randomAngularVelocity
         physicsBody!.categoryBitMask = Category.enemy
-        physicsBody!.contactTestBitMask = 0
-        physicsBody!.collisionBitMask = Category.earth  
+        
+        
     
+    }
+    
+    
+    func setupType(){
+        switch type {
+        case image_bomb:
+            name = name_bomb
+            physicsBody!.contactTestBitMask = 0
+            physicsBody!.collisionBitMask =  Category.earth
+            //            emitter = SKEmitterNode(fileNamed: "sliceFuse.sks")!
+            //            emitter!.position = CGPoint(x: 76, y: 64)
+            //            addChild(emitter!)
+            break
+        default:
+            name = name_enemy
+            physicsBody!.contactTestBitMask = Category.earth
+            physicsBody!.collisionBitMask = Category.enemy
+            break
+        }
+        
     }
     
     

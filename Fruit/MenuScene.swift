@@ -16,7 +16,7 @@ class MenuScene: SKScene {
     
     var width:CGFloat = 0.0
     var height:CGFloat = 0.0
-    
+    var buttons:[ButtonNode] = [ButtonNode]()
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -98,23 +98,26 @@ class MenuScene: SKScene {
     
     func creatBtn(pos:CGPoint,index:Int){
         let textures = [SKTexture(imageNamed: image_btn_blue_up),SKTexture(imageNamed: image_btn_blue_down)]
-        let btn = ButtonNode(arr: textures)
+        let name = "btn_game_" + String(index)
+        let btn = ButtonNode(arr: textures,btnName: name)
         btn.position = pos
-        btn.size = CGSize(width: btn.size.width*0.8, height: btn.size.height*0.8)
+        btn.setImageSize(0.8)
         btn.zPosition = Zposition.label
-        btn.name = "btn_game_" + String(index)
         addChild(btn)
+        
+        buttons.append(btn)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         let touch = touches.first! as UITouch
         let location = touch.locationInNode(self)
         
-        let node = nodeAtPoint(location)
-        if((node.name) != nil){
-            print(node.name!)
-            let btn = node as! ButtonNode
-            btn.btnDown()
+        
+        for i in 0..<buttons.count {
+            let btn:ButtonNode = buttons[i]
+            if(btn.containsPoint(location)){
+                btn.btnDown()
+            }
         }
     }
     
@@ -135,25 +138,29 @@ class MenuScene: SKScene {
         let touch = touches.first! as UITouch
         let location = touch.locationInNode(self)
         
-        let node = nodeAtPoint(location)
-        if((node.name) != nil){
-            print(node.name!)
-            let btn = node as! ButtonNode
-            btn.btnUp()
-            
-            switch node.name! {
-            case name_btn_normalGame:
-                let gameScene = GameScene(size: self.size)
-                self.view?.presentScene(gameScene, transition: transitions[0])
-                break
-            case name_btn_timeGame:
-                break
-            case name_btn_diyGame:
-                break
-            default:
-                break
+        
+        for i in 0..<buttons.count {
+            let btn:ButtonNode = buttons[i]
+            if(btn.containsPoint(location)){
+                if((btn.name) != nil){
+                    btn.btnUp()
+                    switch btn.name! {
+                    case name_btn_normalGame:
+                        let gameScene = GameScene(size: self.size)
+                        self.view?.presentScene(gameScene, transition: transitions[0])
+                        break
+                    case name_btn_timeGame:
+                        break
+                    case name_btn_diyGame:
+                        break
+                    default:
+                        break
+                    }
+                }
             }
         }
+        
+
         
         
     }

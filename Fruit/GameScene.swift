@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 
-class GameScene: SKScene {
+class GameScene: SKScene,SKPhysicsContactDelegate{
     
     var width:CGFloat = 0.0
     var height:CGFloat = 0.0
@@ -655,6 +655,32 @@ class GameScene: SKScene {
         }
 
     }
+    /*---------hit test---------*/
+    
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        let nodeA = contact.bodyA.node
+        let nodeB = contact.bodyB.node
+        let contactBitMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
+        
+        if( contactBitMask == Category.earth  | Category.enemy ){
+            print("eat!!!!")
+            
+            prize.physicsBody?.dynamic = false
+            let shrink = SKAction.scaleTo(0, duration: 0.1)
+            let removeNode = SKAction.removeFromParent()
+            let sequence = SKAction.sequence([shrink,removeNode])
+            prize.runAction(sequence)
+            runAction(nomNomSoundAction)
+            runNomNomAnimationWithDelay(0.2)
+            switchToNewGameWithTransition()
+        }
+    }
+
+
+    
+    /*---------hit test end---------*/
+
     
     /*---------slice end---------*/
     
