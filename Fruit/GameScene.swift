@@ -664,16 +664,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         let contactBitMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         if( contactBitMask == Category.earth  | Category.enemy ){
-            print("eat!!!!")
-            
-            prize.physicsBody?.dynamic = false
-            let shrink = SKAction.scaleTo(0, duration: 0.1)
-            let removeNode = SKAction.removeFromParent()
-            let sequence = SKAction.sequence([shrink,removeNode])
-            prize.runAction(sequence)
-            runAction(nomNomSoundAction)
-            runNomNomAnimationWithDelay(0.2)
-            switchToNewGameWithTransition()
+       
         }
     }
 
