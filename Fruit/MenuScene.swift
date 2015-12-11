@@ -152,6 +152,7 @@ class MenuScene: SKScene {
                     case name_btn_timeGame:
                         break
                     case name_btn_diyGame:
+                        //add diy camera
                         break
                     default:
                         break
