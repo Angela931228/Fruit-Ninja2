@@ -139,7 +139,7 @@ class MenuScene: SKScene {
                     btn.btnUp()
                     switch btn.name! {
                     case name_btn_normalGame:
-                        let gameScene = GameScene(size: self.size,idx: 0)
+                        let gameScene = GameScene(size: self.size,idx: 5)
                         self.view?.presentScene(gameScene, transition: transitions[0])
                         break
                     case name_btn_timeGame:
@@ -147,6 +147,7 @@ class MenuScene: SKScene {
                     case name_btn_diyGame:
                         //add diy camera
                         print("add camera photo")
+                        
                         break
                     default:
                         break

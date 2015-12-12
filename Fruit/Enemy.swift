@@ -16,16 +16,49 @@ class Enemy :SKSpriteNode
     
     var emitter:SKEmitterNode?
     
-    var type:String = ""
+    var image:String = ""
+    var sizeScale:CGFloat = 1.0
+    
     var randomYVelocity:Int = 0
     var randomXVelocity:Int = 0
     var randomAngularVelocity:CGFloat = 0
     var isCut:Bool = false
     
-    init(enemyImageStr:String) {
-        type = enemyImageStr
-        let texture = SKTexture(imageNamed: enemyImageStr)
+    init(enemyIdx:Int) {
+        
+        switch enemyIdx {
+        case 0:
+            image = image_bomb
+            break
+        case 1:
+            image = image_uranus
+            sizeScale = 1.6
+            break
+        case 2:
+            image = image_neptune
+            sizeScale = 1.2
+            break
+        case 3:
+            image = image_pluto
+            sizeScale = 0.8
+            break
+        case 4:
+            image = image_prize
+            sizeScale = 0.8
+            break
+        case 5:
+            image = image_sun
+            sizeScale = 1
+            break
+            
+        default:
+            image = image_bomb
+            break
+        }
+        
+        let texture = SKTexture(imageNamed: image)
         super.init(texture: texture, color: UIColor.clearColor(), size: texture.size())
+        size = CGSize(width: size.width * sizeScale, height: size.height * sizeScale)
     }
 
     
@@ -34,7 +67,10 @@ class Enemy :SKSpriteNode
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMovement(min:Int,max:Int){
+
+
+    
+    func setThrow(min:Int,max:Int){
         setupRandomPosition(min,max: max)
         setupPhysics()
         playStartSoundEffect()
@@ -44,8 +80,8 @@ class Enemy :SKSpriteNode
 
     
     func setupRandomPosition(min:Int,max:Int){
-        //RandomInt(min: min, max: max)
-        let randomPosition = CGPoint(x:0.0 , y: -40)
+        //
+        let randomPosition = CGPoint(x:RandomInt(min: min, max: max) , y: -40)
         position = randomPosition
         
         randomAngularVelocity = CGFloat(RandomInt(min: -6, max: 6))/2.0
@@ -75,7 +111,7 @@ class Enemy :SKSpriteNode
     
     
     func setupType(){
-        switch type {
+        switch image {
         case image_bomb:
             name = name_bomb
             physicsBody!.categoryBitMask = Category.bomb
@@ -95,9 +131,12 @@ class Enemy :SKSpriteNode
         
     }
     
+    func applyForce(){
+        runAction(SKAction.applyForce(CGVector(dx: 0, dy: 0.1), duration: 1))
+    }
     
     func cut(){
-        if(type == image_bomb){
+        if(image == image_bomb){
             creatExplodeEffect(bombCutEffect)
         }else{
             creatExplodeEffect(enemyCutEffect)
@@ -147,7 +186,7 @@ class Enemy :SKSpriteNode
     }
     
     func playStartSoundEffect(){
-        if(type == image_bomb){
+        if(image == image_bomb){
             if soundEffectPlayer != nil {
                 soundEffectPlayer.stop()
                 soundEffectPlayer = nil
@@ -167,7 +206,7 @@ class Enemy :SKSpriteNode
     
     func playEndSoundEffect(){
         if(!isCut){
-            if(type == image_bomb){
+            if(image == image_bomb){
                 runAction(SKAction.playSoundFileNamed("explosion.caf", waitForCompletion: false))
             }else{
                 runAction(SKAction.playSoundFileNamed("whack.caf", waitForCompletion: false))

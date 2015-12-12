@@ -30,8 +30,15 @@ let image_prize = "spaceship"
 let image_bomb = "meteor"
 let image_earth = "earth"
 let image_murcury = "murcury"
-let image_varnus = "varnus"
+let image_uranus = "uranus"
 let image_saturn = "saturn"
+let image_neptune = "neptune"
+let image_mars = "mars"
+let image_pluto = "pluto"
+let image_venus = "venus"
+let image_jupiter = "jupiter"
+let image_moon = "moon"
+let image_sun = "sun"
 
 let name_prize = "prize"
 let name_earth = "earth"
@@ -39,6 +46,7 @@ let name_planet = "planet"
 let name_rope = "rope"
 let name_enemy = "enemy"
 let name_bomb = "bomb"
+let name_boss = "boss"
 let name_add_life = "add_life"
 let name_btn_restart = "restart"
 let name_btn_back = "back"
@@ -49,6 +57,13 @@ let name_btn_diyGame = "btn_game_2"
 let enemyCutEffect = "sliceHitEnemy.sks"
 let bombCutEffect = "sliceHitBomb.sks"
 
+
+let level_tutorial_idx = 0
+let level_moon_idx = 1
+let level_mars_idx = 2
+let level_saturn_idx = 3
+let level_venus_idx = 4
+let level_boss_idx = 5
 
 let passScore_lv1 = 50
 
@@ -82,7 +97,7 @@ enum Bomb{
 }
 
 enum SequenceType: Int {
-    case OneNoBomb, One, TwoWithOneBomb, Tow, Three, Four, Chain, FastChain, Bomb
+    case OneNoBomb, One, TwoWithOneBomb, Two, Three, Four, Chain, FastChain, Bomb
 }
 
 

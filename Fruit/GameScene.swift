@@ -44,7 +44,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     var wave = 0
     var chainDelay = 3.0
     var gameEnded = false
-    var timer = NSTimer()
 
     var isGameEnd:Bool = false
     
@@ -306,12 +305,17 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     func startGame(){
         
-        waveArr = [.OneNoBomb, .OneNoBomb, .TwoWithOneBomb, .TwoWithOneBomb, .Three, .One, .Chain]
-        
-        let spawnRandomAsteroid = SKAction.runBlock({self.creatEnemys()})
-        let waitTime = SKAction.waitForDuration(2.0)
-        let timesequence = SKAction.sequence([spawnRandomAsteroid,waitTime])
-        runAction(SKAction.repeatActionForever(timesequence), withKey: key_creat_planet)
+        if(gameIndex == level_boss_idx){
+            creatBoss()
+        }else{
+            waveArr = [.OneNoBomb, .OneNoBomb, .TwoWithOneBomb]
+            
+            let spawnRandomAsteroid = SKAction.runBlock({self.creatEnemys()})
+            let waitTime = SKAction.waitForDuration(2.0)
+            let timesequence = SKAction.sequence([spawnRandomAsteroid,waitTime])
+            runAction(SKAction.repeatActionForever(timesequence), withKey: key_creat_planet)
+        }
+     
     }
     
     func endGame(){
@@ -366,8 +370,22 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     
     func creatNextWave() -> SequenceType{
-        let nextWave = SequenceType(rawValue: RandomInt(min: 0, max: 7))!
+        var  nextWave:SequenceType = SequenceType.One
         //print(nextWave)
+        switch( gameIndex ){
+        case level_tutorial_idx,level_moon_idx:
+            nextWave = SequenceType(rawValue: RandomInt(min: 0, max: 3))!
+            break
+        case level_mars_idx,level_saturn_idx:
+            nextWave = SequenceType(rawValue: RandomInt(min: 4, max: 8))!
+            break
+        case level_venus_idx:
+            nextWave = SequenceType(rawValue: RandomInt(min: 5, max: 8))!
+            break
+        default:
+            nextWave = SequenceType.Two
+            break
+        }
         return nextWave
     }
     
@@ -390,7 +408,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             createRandomEnemy(Bomb.noBomb)
             createRandomEnemy(Bomb.mustBomb)
             
-        case .Tow:
+        case .Two:
             creatMultipleEnemies(2)
             
         case .Three:
@@ -436,43 +454,36 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         }
     }
     
-    
-    func createRandomEnemy(bomb:Bomb = .random){
-        let enemyType = randomEnemyType(bomb)
-        let imageStr = switchImageString(enemyType)
-        let enemy = Enemy(enemyImageStr: imageStr)
-        if(RandomInt(min: 1, max: 2)>1){
-           enemy.setupMovement(0, max: 300)
-        }else{
-           enemy.setupMovement(700, max: Int(width))
-        }
-        
+    func creatBoss(){
+        physicsWorld.gravity = CGVector(dx: 0, dy: -0.05)
+        let enemy = Enemy(enemyIdx: level_boss_idx)
+        enemy.position = CGPoint(x: width/2, y: height + (enemy.size.height * 0.35))
+        enemy.setupPhysics()
+        enemy.setupType()
+        enemy.name = name_boss
         addChild(enemy)
         activeEnemies.append(enemy)
     }
     
     
+    func createRandomEnemy(bomb:Bomb = .random){
+        let enemyType = randomEnemyType(bomb)
+
+        let enemy = creatThrowEnemy(enemyType)
+        addChild(enemy)
+        activeEnemies.append(enemy)
+    }
     
-    func switchImageString(type:Int) -> String{
-        var imageStr = ""
-        switch type {
-        case 0:
-            imageStr = image_bomb
-            break
-        case 1:
-            imageStr = image_saturn
-            break
-        case 2:
-            imageStr = image_murcury
-            break
-        case 3:
-            imageStr = image_varnus
-            break
-        default:
-            imageStr = image_bomb
-            break
+    func creatThrowEnemy(enemyType:Int) ->Enemy{
+        let enemy = Enemy(enemyIdx: enemyType)
+        let r = RandomInt(min: 1, max: 2)
+        //print(r)
+        if( r < 2 ){
+            enemy.setThrow(0, max: 300)
+        }else{
+            enemy.setThrow(700, max: Int(width))
         }
-        return imageStr
+        return enemy
     }
     
 
@@ -692,23 +703,30 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
                     
                     let enemy = node as! Enemy
                     if(!enemy.isCut){
-                        enemy.cut()
-                        if enemy.name == name_enemy{
-                            addScore(5)
+                        if(enemy.name == name_boss){
+                            activeEnemies[0].applyForce()
+                            enemy.creatExplodeEffect(enemyCutEffect)
+                            addScore(1)
+                        }else{
+                            enemy.cut()
+                            if enemy.name == name_enemy{
+                                addScore(5)
+                            }
+                            
+                            if enemy.name == name_bomb{
+                                lostLife()
+                            }
+                            
+                            if enemy.name == name_add_life{
+                                addLife()
+                            }
+                            
+                            let index = activeEnemies.indexOf(enemy)
+                            if(index>0){
+                                activeEnemies.removeAtIndex(index!)
+                            }
                         }
-                        
-                        if enemy.name == name_bomb{
-                            lostLife()
-                        }
-                        
-                        if enemy.name == name_add_life{
-                            addLife()
-                        }
-                        
-                        let index = activeEnemies.indexOf(enemy)
-                        if(index>0){
-                            activeEnemies.removeAtIndex(index!)
-                        }
+    
                     }
                 }
             }
