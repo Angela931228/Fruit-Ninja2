@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B4383BE1C1BAD1500B853E6 /* Toucan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B4383BB1C1BAD0000B853E6 /* Toucan.framework */; };
+		0B4383C01C1BF5B800B853E6 /* PopImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0B4383BF1C1BF5B800B853E6 /* PopImageView.xib */; settings = {ASSET_TAGS = (); }; };
+		0B4383C21C1BF5EC00B853E6 /* PopImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B4383C11C1BF5EC00B853E6 /* PopImageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		B25A0FB91C09C6D30011190E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A0FB81C09C6D30011190E /* AppDelegate.swift */; };
 		B25A0FBB1C09C6D30011190E /* DirectorScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B25A0FBA1C09C6D30011190E /* DirectorScene.sks */; };
 		B25A0FBD1C09C6D30011190E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B25A0FBC1C09C6D30011190E /* GameScene.swift */; };
@@ -71,6 +74,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0B4383BA1C1BAD0000B853E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0B4383B51C1BAD0000B853E6 /* Toucan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 740AC3EA1999799900AB9A86;
+			remoteInfo = Toucan;
+		};
+		0B4383BC1C1BAD0000B853E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0B4383B51C1BAD0000B853E6 /* Toucan.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 740AC3F51999799900AB9A86;
+			remoteInfo = ToucanTests;
+		};
 		B25A0FCE1C09C6D30011190E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B25A0FAD1C09C6D30011190E /* Project object */;
@@ -88,6 +105,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B4383B51C1BAD0000B853E6 /* Toucan.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Toucan.xcodeproj; path = "Toucan-master/Toucan.xcodeproj"; sourceTree = "<group>"; };
+		0B4383BF1C1BF5B800B853E6 /* PopImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopImageView.xib; sourceTree = "<group>"; };
+		0B4383C11C1BF5EC00B853E6 /* PopImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopImageViewController.swift; sourceTree = "<group>"; };
 		B25A0FB51C09C6D30011190E /* Fruit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Fruit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B25A0FB81C09C6D30011190E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B25A0FBA1C09C6D30011190E /* DirectorScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DirectorScene.sks; sourceTree = "<group>"; };
@@ -138,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B4383BE1C1BAD1500B853E6 /* Toucan.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,9 +179,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B4383B61C1BAD0000B853E6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0B4383BB1C1BAD0000B853E6 /* Toucan.framework */,
+				0B4383BD1C1BAD0000B853E6 /* ToucanTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		B25A0FAC1C09C6D30011190E = {
 			isa = PBXGroup;
 			children = (
+				0B4383B51C1BAD0000B853E6 /* Toucan.xcodeproj */,
 				B25A0FB71C09C6D30011190E /* Fruit */,
 				B25A0FD01C09C6D30011190E /* FruitTests */,
 				B25A0FDB1C09C6D30011190E /* FruitUITests */,
@@ -261,6 +292,8 @@
 				F4EDC1091C16F7B6002726F7 /* AnimeNode.swift */,
 				B25A103F1C09D61B0011190E /* Constants.swift */,
 				B25A0FC31C09C6D30011190E /* Assets.xcassets */,
+				0B4383BF1C1BF5B800B853E6 /* PopImageView.xib */,
+				0B4383C11C1BF5EC00B853E6 /* PopImageViewController.swift */,
 			);
 			name = code;
 			sourceTree = "<group>";
@@ -369,6 +402,12 @@
 			mainGroup = B25A0FAC1C09C6D30011190E;
 			productRefGroup = B25A0FB61C09C6D30011190E /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 0B4383B61C1BAD0000B853E6 /* Products */;
+					ProjectRef = 0B4383B51C1BAD0000B853E6 /* Toucan.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				B25A0FB41C09C6D30011190E /* Fruit */,
@@ -377,6 +416,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0B4383BB1C1BAD0000B853E6 /* Toucan.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Toucan.framework;
+			remoteRef = 0B4383BA1C1BAD0000B853E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0B4383BD1C1BAD0000B853E6 /* ToucanTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ToucanTests.xctest;
+			remoteRef = 0B4383BC1C1BAD0000B853E6 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		B25A0FB31C09C6D30011190E /* Resources */ = {
@@ -405,6 +461,7 @@
 				B25A101E1C09CE9C0011190E /* sliceHitEnemy.sks in Resources */,
 				B25A10181C09CE9C0011190E /* sliceFuse.sks in Resources */,
 				B25A0FC21C09C6D30011190E /* Main.storyboard in Resources */,
+				0B4383C01C1BF5B800B853E6 /* PopImageView.xib in Resources */,
 				B25A10391C09CE9C0011190E /* whack.caf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,6 +516,7 @@
 				B25D49D11C11B1FB00AA63D6 /* Rope.swift in Sources */,
 				B25A0FBF1C09C6D30011190E /* GameViewController.swift in Sources */,
 				B25A0FB91C09C6D30011190E /* AppDelegate.swift in Sources */,
+				0B4383C21C1BF5EC00B853E6 /* PopImageViewController.swift in Sources */,
 				F4EDC1081C16F6DB002726F7 /* DirectorScene.swift in Sources */,
 				F4EDC1061C16EEF2002726F7 /* MenuScene.swift in Sources */,
 				B25A10401C09D61B0011190E /* Constants.swift in Sources */,
