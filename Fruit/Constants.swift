@@ -35,6 +35,7 @@ let image_saturn = "saturn"
 
 let name_prize = "prize"
 let name_earth = "earth"
+let name_planet = "planet"
 let name_rope = "rope"
 let name_enemy = "enemy"
 let name_bomb = "bomb"
@@ -55,6 +56,7 @@ let maxLife = 3
 
 let key_creat_planet = "creat_planet"
 let key_rotate_earth = "rotate_earth"
+let key_rotate_planet = "rotate_planet"
 
 
 let transitions = [
@@ -91,6 +93,8 @@ struct Category
     static let Rope: UInt32 = 4
     static let RopeHolder: UInt32 = 8
     static let Prize: UInt32 = 16
+    static let planet: UInt32 = 32
+    static let bomb: UInt32 = 64
 }
 
 

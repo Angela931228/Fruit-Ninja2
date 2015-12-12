@@ -18,13 +18,6 @@ class MenuScene: SKScene {
     var height:CGFloat = 0.0
     var buttons:[ButtonNode] = [ButtonNode]()
     
-    override init(size: CGSize) {
-        super.init(size: size)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func didMoveToView(view: SKView) {
         width = (self.view?.frame.size.width)!
@@ -146,13 +139,14 @@ class MenuScene: SKScene {
                     btn.btnUp()
                     switch btn.name! {
                     case name_btn_normalGame:
-                        let gameScene = GameScene(size: self.size)
+                        let gameScene = GameScene(size: self.size,idx: 0)
                         self.view?.presentScene(gameScene, transition: transitions[0])
                         break
                     case name_btn_timeGame:
                         break
                     case name_btn_diyGame:
                         //add diy camera
+                        print("add camera photo")
                         break
                     default:
                         break

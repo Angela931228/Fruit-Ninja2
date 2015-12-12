@@ -14,6 +14,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     var width:CGFloat = 0.0
     var height:CGFloat = 0.0
+    var gameIndex:Int = 0
+    var passScore:Int = 0
     
     var gameScoreLabel: SKLabelNode!
     var gameTipsLabel: SKLabelNode!
@@ -46,22 +48,24 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
 
     var isGameEnd:Bool = false
     
+    init(size:CGSize,idx:Int = 0){
+        gameIndex = idx
+        super.init(size: size)
+    }
 
-//    override init(size: CGSize) {
-//        super.init(size: size)
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func didMoveToView(view: SKView) {
         width = (self.view?.frame.size.width)!
         height = (self.view?.frame.size.height)!
+        print(width)
+        print(height)
 
         setupPhysics()
         setupUI()
-
+        setGameLevel()
         createSlices()
         
         
@@ -72,6 +76,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     func setupPhysics(){
         physicsWorld.gravity = CGVector(dx: 0, dy: -6)
         physicsWorld.speed = 0.85
+        physicsWorld.contactDelegate = self;
     }
 
     
@@ -123,7 +128,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     func creatEarth(){
         earth = SKSpriteNode(imageNamed: image_earth)
         earth.position = CGPoint(x: width/2, y: 0)
-        earth.zPosition = Zposition.background
+        earth.zPosition = Zposition.planet
         earth.name = name_earth
         addChild(earth)
         
@@ -133,9 +138,12 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         earth.physicsBody = SKPhysicsBody(texture: earth.texture!, size: earth.size)
         earth.physicsBody?.categoryBitMask = Category.earth
-        earth.physicsBody?.collisionBitMask = Category.enemy
+        earth.physicsBody?.contactTestBitMask = Category.enemy
+        earth.physicsBody?.collisionBitMask = Category.bomb
         earth.physicsBody?.dynamic = false
         
+        print(earth.position.x - earth.size.width)
+        print(earth.position.x + earth.size.width)
 
     }
 
@@ -185,6 +193,56 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     }
     
     /*---------UI end---------*/
+    
+    
+    /*---------game level ---------*/
+    
+    func setGameLevel(){
+        loadFileData()
+        
+    }
+    
+    func loadFileData(){
+        let file_name = file_gameData + ".plist"
+        let dataFile = NSBundle.mainBundle().pathForResource(file_name, ofType: nil)
+        let game_datas = NSArray(contentsOfFile: dataFile!) as! [NSDictionary]
+        let cur_game_data = game_datas[gameIndex] as NSDictionary
+        let planet_arr = cur_game_data["planets"] as! NSArray
+        
+        
+        passScore = cur_game_data["pass_score"] as! Int
+        
+        for i in 0..<planet_arr.count
+        {
+            let plantData = planet_arr[i] as! NSDictionary
+            let x = plantData["x"] as! CGFloat
+            let y = plantData["y"] as! CGFloat
+            let image = plantData["image"] as! String
+            let pos = CGPoint(x: x * width,y:y * height)
+            let planet = SKSpriteNode(imageNamed: image)
+            planet.position = pos
+            planet.zPosition = Zposition.planet
+            planet.name = name_planet
+            addChild(planet)
+            
+            let rotate = SKAction.rotateByAngle(2, duration: 5)
+            planet.runAction(SKAction.repeatActionForever(rotate), withKey: key_rotate_planet)
+            
+            
+            planet.physicsBody = SKPhysicsBody(texture: planet.texture!, size: planet.size)
+            planet.physicsBody?.categoryBitMask = Category.planet
+            planet.physicsBody?.collisionBitMask = Category.enemy
+            planet.physicsBody?.dynamic = false
+            
+
+        }
+        
+
+    }
+    
+    
+    
+    /*---------game level end---------*/
 
     
     /*---------game logic ---------*/
@@ -192,7 +250,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     func addScore(num:Int){
         score+=num
-        if score >= passScore_lv1{
+        if score >= passScore{
             pass()
         }
     }
@@ -250,7 +308,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         waveArr = [.OneNoBomb, .OneNoBomb, .TwoWithOneBomb, .TwoWithOneBomb, .Three, .One, .Chain]
         
-        let spawnRandomAsteroid = SKAction.runBlock({self.creatPlanets()})
+        let spawnRandomAsteroid = SKAction.runBlock({self.creatEnemys()})
         let waitTime = SKAction.waitForDuration(2.0)
         let timesequence = SKAction.sequence([spawnRandomAsteroid,waitTime])
         runAction(SKAction.repeatActionForever(timesequence), withKey: key_creat_planet)
@@ -313,7 +371,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         return nextWave
     }
     
-    func creatPlanets(){
+    func creatEnemys(){
         wave++
         
         let newWave = creatNextWave()
@@ -383,7 +441,12 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         let enemyType = randomEnemyType(bomb)
         let imageStr = switchImageString(enemyType)
         let enemy = Enemy(enemyImageStr: imageStr)
-        enemy.setupMovement(64, max: 960)
+        if(RandomInt(min: 1, max: 2)>1){
+           enemy.setupMovement(0, max: 300)
+        }else{
+           enemy.setupMovement(700, max: Int(width))
+        }
+        
         addChild(enemy)
         activeEnemies.append(enemy)
     }
@@ -460,9 +523,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             (body,point,normal,stop) -> Void in
             self.checkCut(body)
         })
-        
-
-
     }
     
 
@@ -664,7 +724,17 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         let contactBitMask = contact.bodyA.categoryBitMask | contact.bodyB.categoryBitMask
         
         if( contactBitMask == Category.earth  | Category.enemy ){
-       
+            let enemy:Enemy?
+            let earth:SKSpriteNode?
+            if(contact.bodyA.categoryBitMask == Category.enemy){
+                enemy = nodeA as! Enemy
+                earth = nodeB as! SKSpriteNode
+            }else{
+                enemy = nodeB as! Enemy
+                earth = nodeA as! SKSpriteNode
+            }
+            
+            enemy?.cut()
         }
     }
 

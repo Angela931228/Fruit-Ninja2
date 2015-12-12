@@ -7,70 +7,46 @@
 		<array>
 			<dict>
 				<key>image</key>
-				<string></string>
+				<string>moon</string>
 				<key>x</key>
-				<integer>0</integer>
+				<real>0.5</real>
 				<key>y</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>image</key>
-				<string></string>
-				<key>x</key>
-				<integer>0</integer>
-				<key>y</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>image</key>
-				<string></string>
-				<key>x</key>
-				<integer>0</integer>
-				<key>y</key>
-				<integer>0</integer>
+				<real>0.6</real>
 			</dict>
 		</array>
 		<key>pass_score</key>
-		<integer>0</integer>
+		<integer>50</integer>
 		<key>bomb_type</key>
-		<string></string>
+		<string>throw</string>
 		<key>star_type</key>
-		<string></string>
+		<string>throw</string>
 	</dict>
 	<dict>
 		<key>planets</key>
 		<array>
 			<dict>
 				<key>image</key>
-				<string></string>
+				<string>moon</string>
 				<key>x</key>
-				<integer>0</integer>
+				<real>0.3</real>
 				<key>y</key>
-				<integer>0</integer>
+				<real>0.8</real>
 			</dict>
 			<dict>
 				<key>image</key>
-				<string></string>
+				<string>moon</string>
 				<key>x</key>
-				<integer>0</integer>
+				<real>0.6</real>
 				<key>y</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>image</key>
-				<string></string>
-				<key>x</key>
-				<integer>0</integer>
-				<key>y</key>
-				<integer>0</integer>
+				<real>0.8</real>
 			</dict>
 		</array>
 		<key>pass_score</key>
-		<integer>0</integer>
+		<integer>100</integer>
 		<key>bomb_type</key>
-		<string></string>
+		<string>horizon</string>
 		<key>star_type</key>
-		<string></string>
+		<string>throw</string>
 	</dict>
 </array>
 </plist>

@@ -41,21 +41,11 @@ class Enemy :SKSpriteNode
         setupType()
     }
     
-    func checkSelf(){
-        let wait = SKAction.waitForDuration(0.2)
-        let check = SKAction.runBlock({
-            if(self.position.y>200){
-                self.physicsBody!.collisionBitMask = Category.earth
-                self.removeActionForKey("check")
-            }
-        })
-        
-        let seq = SKAction.sequence([wait,check])
-        runAction(seq, withKey: "check")
-    }
+
     
     func setupRandomPosition(min:Int,max:Int){
-        let randomPosition = CGPoint(x: RandomInt(min: min, max: max), y: -40)
+        //RandomInt(min: min, max: max)
+        let randomPosition = CGPoint(x:0.0 , y: -40)
         position = randomPosition
         
         randomAngularVelocity = CGFloat(RandomInt(min: -6, max: 6))/2.0
@@ -75,11 +65,10 @@ class Enemy :SKSpriteNode
     
     func setupPhysics(){
         physicsBody = SKPhysicsBody(texture: texture!, size: size)
+        physicsBody?.dynamic = true
         physicsBody!.velocity = CGVector(dx: randomXVelocity * 40, dy: randomYVelocity * 40)
         physicsBody?.restitution = 1.0
         physicsBody!.angularVelocity = randomAngularVelocity
-        physicsBody!.categoryBitMask = Category.enemy
-        
         
     
     }
@@ -89,16 +78,18 @@ class Enemy :SKSpriteNode
         switch type {
         case image_bomb:
             name = name_bomb
+            physicsBody!.categoryBitMask = Category.bomb
             physicsBody!.contactTestBitMask = 0
-            physicsBody!.collisionBitMask =  Category.earth
+            physicsBody!.collisionBitMask =  Category.earth | Category.planet
             //            emitter = SKEmitterNode(fileNamed: "sliceFuse.sks")!
             //            emitter!.position = CGPoint(x: 76, y: 64)
             //            addChild(emitter!)
             break
         default:
             name = name_enemy
+            physicsBody!.categoryBitMask = Category.enemy
             physicsBody!.contactTestBitMask = Category.earth
-            physicsBody!.collisionBitMask = Category.enemy
+            physicsBody!.collisionBitMask = Category.planet
             break
         }
         
