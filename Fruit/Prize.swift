@@ -15,7 +15,7 @@ class Prize :Enemy
 {
     var ropeArr = [Rope]()
     init(pos:CGPoint) {
-        super.init(enemyImageStr: image_prize)
+        super.init(enemyIdx: 4)
         position = pos
         zPosition = Zposition.prize
         name = name_prize

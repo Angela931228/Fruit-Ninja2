@@ -14,8 +14,12 @@ class GameViewController: UIViewController,UIImagePickerControllerDelegate,UINav
     override func viewDidLoad() {
         super.viewDidLoad()
 
+<<<<<<< HEAD
        // UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
         if let scene = DirectorScene(fileNamed:"DirectorScene") {
+=======
+        if let scene = MenuScene(fileNamed:"MenuScene") {
+>>>>>>> 8797522ba6fd4517b0a1f11bb63d0108d9481dba
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
